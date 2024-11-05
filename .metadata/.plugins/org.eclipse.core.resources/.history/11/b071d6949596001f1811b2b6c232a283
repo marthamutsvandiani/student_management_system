@@ -1,0 +1,11 @@
+package com.example.studentmanagement.repository;
+
+import com.example.studentmanagement.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    // Custom query to find a user by username (useful for login)
+    User findByUsername(String username);
+}

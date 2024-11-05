@@ -1,0 +1,48 @@
+package com.example.studentmanagement.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.example.studentmanagement.entity.User;
+import com.example.studentmanagement.repository.UserRepository;
+import com.example.studentmanagement.service.UserService;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public User saveUser(User user) {
+        // Encode the password before saving
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+    
+    public void encodeExistingPasswords() {
+        List<User> users = userRepository.findAll(); // Retrieve all users
+        for (User user : users) {
+            String plainPassword = user.getPassword();
+            if (!plainPassword.startsWith("$2a$")) { // Ensure it's not already encoded
+                user.setPassword(passwordEncoder.encode(plainPassword)); // Encode
+                userRepository.save(user); // Save the encoded password
+            }
+        }
+    }
+
+}

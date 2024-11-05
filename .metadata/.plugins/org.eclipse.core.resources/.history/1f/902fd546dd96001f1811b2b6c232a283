@@ -1,0 +1,13 @@
+package com.example.studentmanagement.service;
+
+import com.example.studentmanagement.entity.User;
+
+public interface UserService {
+    User findByUsername(String username);
+    User saveUser(User user);
+	static void encodeExistingPasswords() {
+		// TODO Auto-generated method stub
+		
+	}
+}
+

@@ -1,0 +1,30 @@
+package com.example.studentmanagement.web;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+public class MainController {
+    
+    @GetMapping("/login")
+    public String login() {
+        return "login"; // Adjust to match your view name
+    }
+    
+    @GetMapping("/")
+    public String home() {
+        return "index";
+    }
+    
+    // New method to show registration page
+    @GetMapping("/registration")
+    public String showRegistrationForm(@RequestParam(value = "success", required = false) String success, Model model) {
+        // If the success parameter is present, add a success message to the model
+        if (success != null) {
+            model.addAttribute("successMessage", "You have successfully registered! Please log in.");
+        }
+        return "registration"; // This should match the name of your registration template
+    }
+}
