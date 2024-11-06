@@ -19,14 +19,13 @@ jobs:
           java-version: '21'
 
       - name: Build with Maven
-        working-directory: studentmanagementsystem  # Specify the directory with your pom.xml
-        run: mvn clean install
+        run: mvn clean install -DskipTests
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: 'studentmanagementsystem/target/*.jar'  # Adjust the path to match the new working directory
+          path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
