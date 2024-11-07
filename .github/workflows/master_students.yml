@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '21'
-          distribution: 'adoptopenjdk'
+          distribution: 'temurin'  # Use temurin instead of adoptopenjdk
 
       - name: Run tests with application-test.properties
         run: |
@@ -35,7 +35,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '21'
-          distribution: 'adoptopenjdk'
+          distribution: 'temurin'  # Use temurin instead of adoptopenjdk
 
       - name: Build with Maven
         run: |
@@ -67,5 +67,5 @@ jobs:
         with:
           app-name: 'students'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}  # Using the secret
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           package: '*.jar'
