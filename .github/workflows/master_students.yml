@@ -24,10 +24,10 @@ jobs:
         with:
           maven-version: '3.8.4'  # You can specify your desired Maven version if necessary
 
-      - name: Run tests
+      - name: Run tests with application-test.properties
         run: |
           cd studentmanagementsystem
-          mvn clean test -Dspring.profiles.active=test # Run tests with 'test' profile (application-test.properties)
+          mvn clean test -Dspring.profiles.active=test # Ensures the 'test' profile is used
 
   # Job for building the application
   build:
