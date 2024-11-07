@@ -7,8 +7,32 @@ on:
   workflow_dispatch:
 
 jobs:
+  # Job for running tests
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java version
+        uses: actions/setup-java@v1
+        with:
+          java-version: '21'
+
+      - name: Set up Maven
+        uses: actions/setup-java@v1
+        with:
+          maven-version: '3.8.4'  # You can specify your desired Maven version if necessary
+
+      - name: Run tests
+        run: |
+          cd studentmanagementsystem
+          mvn clean test -Dspring.profiles.active=test # Run tests with 'test' profile (application-test.properties)
+
+  # Job for building the application
   build:
     runs-on: ubuntu-latest
+    needs: test  # This makes sure the build only runs if tests pass
 
     steps:
       - uses: actions/checkout@v4
@@ -22,13 +46,14 @@ jobs:
         run: |
           cd studentmanagementsystem
           mvn clean install
-
+          
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: java-app
           path: '${{ github.workspace }}/studentmanagementsystem/target/*.jar'
 
+  # Job for deployment to Azure
   deploy:
     runs-on: ubuntu-latest
     needs: build
